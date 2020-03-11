@@ -24,8 +24,4 @@ Second Chapter 10
 ```
 
 usage:
-```
-pdfoutline in.pdf in.toc out.pdf
-```
-
-![](img/demo.png)
+![`pdfoutline in.pdf in.toc out.pdf`](img/demo.png)
