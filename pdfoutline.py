@@ -25,7 +25,7 @@ class Entry():
 
 def toc_to_elist(toc, TAB = '    '):
 
-    lines = list(filter(bool, toc.split('\n'))) # filter empty string
+    lines = toc.split('\n')
     cur_entry = [[]] # current entries by depth
     offset = 0
 
@@ -37,8 +37,12 @@ def toc_to_elist(toc, TAB = '    '):
         if not line:
             continue
 
-        if line[0] in '+-':
+        if line[0] == '+':
             offset += int(line[1:])
+            continue
+
+        if line[0] == '-':
+            offset -= int(line[1:])
             continue
 
         try:
@@ -48,6 +52,7 @@ def toc_to_elist(toc, TAB = '    '):
             cur_entry[depth].append(Entry(name, page, cur_entry[depth+1]))
 
         except:
+            # todo display line number
             print('syntax error in toc-file. line:\n' + line)
             exit(1)
 
