@@ -64,8 +64,8 @@ def elist_to_gs(elist):
     def rec_elist_to_gslist(elist):
         gs_list = []
         for entry in elist:
-            gs_list.append("[/Page %d /View [/XYZ null null null] /Title (%s) /Count %d /OUT pdfmark" \
-                    % (entry.page, entry.name, len(entry.children)))
+            gs_list.append("[/Page %d /View [/XYZ null null null] /Title <%s> /Count %d /OUT pdfmark" \
+                    % (entry.page, entry.name.encode("utf-16").hex(), len(entry.children)))
             gs_list += rec_elist_to_gslist(entry.children)
         return gs_list
 
