@@ -1,12 +1,22 @@
 # ![](img/bookmark_border-24px.svg) pdfoutline
-### A command line tool for adding an outline (a bookmark, or table of contents) to pdf files
 
+A command line tool for adding an outline (a bookmark, or table of contents) to pdf files
 
-sample output:<br><br>
+### Prerequisites
+
+Make sure you have `ghostscrict` installed. In Mac, you can use `homebrew`:
+
+```
+brew install ghostscript
+```
+
+### Sample output
+
 <img src="img/demo-output.png" width="300" style="margin:auto">
 
 
-sample toc file:
+### Sample Table of contents file: `sample.toc`
+
 ```
 # this is a comment
 First Chapter 1
@@ -23,5 +33,10 @@ Second Chapter 10
     some entry 11
 ```
 
-usage:
-![`pdfoutline in.pdf in.toc out.pdf`](img/demo.png)
+### Usage
+
+```
+$ ./pdfoutline.py sample.pdf sample.toc sample-out.pdf
+ |██████████████████████----------------------------| 118/263
+```
+
