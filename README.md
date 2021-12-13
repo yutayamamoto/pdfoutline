@@ -4,7 +4,7 @@ A command line tool for adding an outline (a bookmark, or table of contents) to 
 
 ### Prerequisites
 
-Make sure you have `ghostscrict` installed. In Mac, you can use `homebrew`:
+Make sure you have `ghostscript` installed. In Mac, you can use `homebrew`:
 
 ```
 brew install ghostscript
