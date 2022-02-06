@@ -119,8 +119,7 @@ def pdfoutline(inpdf, tocfilename, outpdf, gs='gs'):
 
     tmp = tempfile.NamedTemporaryFile(mode = 'w', delete=False)
     try: 
-        with tmp as out:
-            out.write(gs_command)
+        tmp.write(gs_command)
 
         process = subprocess.Popen(\
             [gs, '-o', outpdf, '-sDEVICE=pdfwrite', tmp.name, '-f', inpdf],\
