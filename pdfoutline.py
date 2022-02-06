@@ -8,7 +8,7 @@
 import sys
 import re
 import subprocess
-
+import tempfile, os
 
 class Entry():
 
@@ -116,26 +116,31 @@ def pdfoutline(inpdf, tocfilename, outpdf):
         toc = f.read()
         gs_command = elist_to_gs(toc_to_elist(toc))
 
-    with open('/tmp/tmp.gs', 'w') as out:
-        out.write(gs_command)
+    tmp = tempfile.NamedTemporaryFile(mode = 'w', delete=False)
+    try: 
+        with tmp as out:
+            out.write(gs_command)
 
-    process = subprocess.Popen(\
-        ['gs', '-o', outpdf, '-sDEVICE=pdfwrite', '/tmp/tmp.gs' , '-f', inpdf],\
-        stdout=subprocess.PIPE)
+        process = subprocess.Popen(\
+            ['gs', '-o', outpdf, '-sDEVICE=pdfwrite', tmp.name, '-f', inpdf],\
+            stdout=subprocess.PIPE)
 
-    # show progress bar
-    totalPage = 0
-    for line in process.stdout:
-        tot = re.findall(r'Processing pages 1 through (\d+)', line.decode('ascii'))
-        if tot:
-            totalPage = int(tot[0])
-            printProgressBar(0, totalPage)
-            break
+        # show progress bar
+        totalPage = 0
+        for line in process.stdout:
+            tot = re.findall(r'Processing pages 1 through (\d+)', line.decode('ascii'))
+            if tot:
+                totalPage = int(tot[0])
+                printProgressBar(0, totalPage)
+                break
 
-    for line in process.stdout:
-        currentPage = re.findall(r'Page (\d+)', line.decode('ascii').strip())
-        if currentPage:
-            printProgressBar(int(currentPage[0]), totalPage)
+        for line in process.stdout:
+            currentPage = re.findall(r'Page (\d+)', line.decode('ascii').strip())
+            if currentPage:
+                printProgressBar(int(currentPage[0]), totalPage)
+    finally:
+        tmp.close()
+        os.unlink(tmp.name)
 
 
 # https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
