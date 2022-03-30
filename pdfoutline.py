@@ -8,7 +8,8 @@
 import sys
 import re
 import subprocess
-
+import tempfile, os, sys
+import argparse
 
 class Entry():
 
@@ -110,32 +111,36 @@ def elist_to_gs(elist):
     return '\n'.join(rec_elist_to_gslist(elist))
 
 
-def pdfoutline(inpdf, tocfilename, outpdf):
+def pdfoutline(inpdf, tocfilename, outpdf, gs='gs'):
 
     with open(tocfilename) as f:
         toc = f.read()
         gs_command = elist_to_gs(toc_to_elist(toc))
 
-    with open('/tmp/tmp.gs', 'w') as out:
-        out.write(gs_command)
+    tmp = tempfile.NamedTemporaryFile(mode = 'w', delete=False)
+    try: 
+        tmp.write(gs_command)
 
-    process = subprocess.Popen(\
-        ['gs', '-o', outpdf, '-sDEVICE=pdfwrite', '/tmp/tmp.gs' , '-f', inpdf],\
-        stdout=subprocess.PIPE)
+        process = subprocess.Popen(\
+            [gs, '-o', outpdf, '-sDEVICE=pdfwrite', tmp.name, '-f', inpdf],\
+            stdout=subprocess.PIPE)
 
-    # show progress bar
-    totalPage = 0
-    for line in process.stdout:
-        tot = re.findall(r'Processing pages 1 through (\d+)', line.decode('ascii'))
-        if tot:
-            totalPage = int(tot[0])
-            printProgressBar(0, totalPage)
-            break
+        # show progress bar
+        totalPage = 0
+        for line in process.stdout:
+            tot = re.findall(r'Processing pages 1 through (\d+)', line.decode('ascii'))
+            if tot:
+                totalPage = int(tot[0])
+                printProgressBar(0, totalPage)
+                break
 
-    for line in process.stdout:
-        currentPage = re.findall(r'Page (\d+)', line.decode('ascii').strip())
-        if currentPage:
-            printProgressBar(int(currentPage[0]), totalPage)
+        for line in process.stdout:
+            currentPage = re.findall(r'Page (\d+)', line.decode('ascii').strip())
+            if currentPage:
+                printProgressBar(int(currentPage[0]), totalPage)
+    finally:
+        tmp.close()
+        os.unlink(tmp.name)
 
 
 # https://stackoverflow.com/questions/3173320/text-progress-bar-in-the-console
@@ -162,11 +167,19 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(prog="pdfoutline.py", description='add table of contents to a pdf')
 
-    if len(sys.argv) == 4:
-        if sys.argv[1] == sys.argv[3]:
-            print('Specify different names for input and output files.')
-        else:
-            pdfoutline(sys.argv[1], sys.argv[2], sys.argv[3])
+    parser.add_argument('in_pdf', metavar = 'in.pdf', help = 'the input pdf file')
+    parser.add_argument('in_toc', metavar = 'in.toc', help = ' a table of contents file in the specified format ')
+    parser.add_argument('out_pdf', metavar = 'out.pdf', help = ' the output pdf file')
+    parser.add_argument('-g', '--gs_path', type=str, help = "Path to the ghostscript executable")
+
+    args = parser.parse_args()
+
+    if args.in_pdf == args.out_pdf:
+        print('Specify different names for input and output files.')
+        sys.exit()
+    if args.gs_path :
+        pdfoutline(args.in_pdf, args.in_toc, args.out_pdf, args.gs_path)
     else:
-        print('usage: pdfoutline in.pdf in.toc out.pdf')
+        pdfoutline(args.in_pdf, args.in_toc, args.out_pdf)
