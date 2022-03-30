@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
-# https://www.planetpdf.com/planetpdf/pdfs/primer.pdf
-# https://www.adobe.com/content/dam/acom/en/devnet/acrobat/pdfs/pdfmarkreference.pdf
+# Adobe pdfMark Reference
+# https://opensource.adobe.com/dc-acrobat-sdk-docs/acrobatsdk/pdfs/acrobatsdk_pdfmark.pdf
+
 # in toc file, you must close the parenthesis()!! otherwise, gs fails.
 
 
