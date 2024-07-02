@@ -167,12 +167,15 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(prog="pdfoutline.py", description='add table of contents to a pdf')
+    parser = argparse.ArgumentParser(
+        prog="pdfoutline.py",
+        description='Adds table of contents to a PDF document.',
+        epilog="Example toc file at https://github.com/yutayamamoto/pdfoutline")
 
-    parser.add_argument('in_pdf', metavar = 'in.pdf', help = 'the input pdf file')
-    parser.add_argument('in_toc', metavar = 'in.toc', help = ' a table of contents file in the specified format ')
-    parser.add_argument('out_pdf', metavar = 'out.pdf', help = ' the output pdf file')
-    parser.add_argument('-g', '--gs_path', type=str, help = "Path to the ghostscript executable")
+    parser.add_argument('in_pdf', metavar = 'pdf_in', help = 'Input pdf file')
+    parser.add_argument('in_toc', metavar = 'toc_in', help = 'Table of contents file in the specified format')
+    parser.add_argument('out_pdf', metavar = 'pdf_out', help = 'Output pdf file')
+    parser.add_argument('-g', '--gs_path', type=str, help = "Path to ghostscript executable")
 
     args = parser.parse_args()
 
