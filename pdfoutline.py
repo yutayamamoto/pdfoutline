@@ -12,6 +12,9 @@ import subprocess
 import tempfile, os, sys
 import argparse
 
+def eprint(*args, **kwargs):
+    return print(*args, file=sys.stderr, **kwargs)
+
 class Entry():
 
     def __init__(self, name, page, children):
@@ -19,10 +22,10 @@ class Entry():
         self.page = page
         self.children = children # Entry list
 
-    def pritty_print(self, depth):
-        print(depth * '  ' + self.name + ':' + str(self.page))
+    def pritty_eprint(self, depth):
+        eprint(depth * '  ' + self.name + ':' + str(self.page))
         for c in self.children:
-            c.pritty_print(depth+1)
+            c.pritty_eprint(depth+1)
 
 
 # Parse the start of the line for whitespace characters and return "tab";
@@ -40,14 +43,16 @@ def parse_tab(line):
     return tab
 
 
-def toc_to_elist(toc):
+def toc_to_elist(toc, filename):
 
     tab = "" # indentation character(s) evaluated and assigned to this later
     lines = toc.split('\n')
+    lineno = 0 # incremented at the very beginning of the loop
     cur_entry = [[]] # current entries by depth
     offset = 0
 
     for line in lines:
+        lineno += 1
 
         # if indentation style hasn't been evaluated yet and the line starts
         # with a whitespace character, assume its an indent and assign all the
@@ -86,14 +91,14 @@ def toc_to_elist(toc):
             continue
 
         try:
-            (name, page) = re.findall(r'(.*) (\d+)$', line)[0]
+            (name, page) = re.findall(r'(.*)\s+(\d+)$', line)[0]
+            name = name.strip()
             page = int(page) + offset
             cur_entry = cur_entry[:depth+1] + [[]]
             cur_entry[depth].append(Entry(name, page, cur_entry[depth+1]))
 
         except:
-            # todo display line number
-            print('syntax error in toc-file. line:\n' + line)
+            eprint('{}: line {}: syntax error: {}'.format(filename, lineno, line))
             exit(1)
 
     return cur_entry[0]
@@ -112,11 +117,11 @@ def elist_to_gs(elist):
     return '\n'.join(rec_elist_to_gslist(elist))
 
 
-def pdfoutline(inpdf, tocfilename, outpdf, gs='gs'):
+def pdfoutline(inpdf, tocfilename, outpdf, gs='gs', quiet=False):
 
     with open(tocfilename) as f:
         toc = f.read()
-        gs_command = elist_to_gs(toc_to_elist(toc))
+        gs_command = elist_to_gs(toc_to_elist(toc, tocfilename))
 
     tmp = tempfile.NamedTemporaryFile(mode = 'w', delete=False)
     tmp.write(gs_command)
@@ -132,12 +137,13 @@ def pdfoutline(inpdf, tocfilename, outpdf, gs='gs'):
         tot = re.findall(r'Processing pages 1 through (\d+)', line.decode('ascii'))
         if tot:
             totalPage = int(tot[0])
-            printProgressBar(0, totalPage)
+            if not quiet:
+                printProgressBar(0, totalPage)
             break
 
     for line in process.stdout:
         currentPage = re.findall(r'Page (\d+)', line.decode('ascii').strip())
-        if currentPage:
+        if currentPage and not quiet:
             printProgressBar(int(currentPage[0]), totalPage)
 
     os.unlink(tmp.name)
@@ -160,10 +166,10 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
     filledLength = int(length * iteration // total)
     bar = fill * filledLength + '-' * (length - filledLength)
-    print('\r%s |%s| %d/%d %s' % (prefix, bar, iteration, total, suffix), end = printEnd)
+    eprint("\r{} |{}| {}/{} {}".format(prefix, bar, iteration, total, suffix), end = printEnd)
     # Print New Line on Complete
     if iteration == total:
-        print()
+        eprint()
 
 
 if __name__ == '__main__':
@@ -176,13 +182,14 @@ if __name__ == '__main__':
     parser.add_argument('in_toc', metavar = 'toc_in', help = 'Table of contents file in the specified format')
     parser.add_argument('out_pdf', metavar = 'pdf_out', help = 'Output pdf file')
     parser.add_argument('-g', '--gs_path', type=str, help = "Path to ghostscript executable")
+    parser.add_argument('-q', '--quiet', action = 'store_true', help = "Print only errors")
 
     args = parser.parse_args()
 
     if args.in_pdf == args.out_pdf:
-        print('Specify different names for input and output files.')
+        eprint('Specify different names for input and output files.')
         sys.exit()
     if args.gs_path :
-        pdfoutline(args.in_pdf, args.in_toc, args.out_pdf, args.gs_path)
+        pdfoutline(args.in_pdf, args.in_toc, args.out_pdf, args.gs_path, quiet=args.quiet)
     else:
-        pdfoutline(args.in_pdf, args.in_toc, args.out_pdf)
+        pdfoutline(args.in_pdf, args.in_toc, args.out_pdf, quiet=args.quiet)
