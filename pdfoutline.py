@@ -5,18 +5,20 @@
 
 # in toc file, you must close the parenthesis()!! otherwise, gs fails.
 
-
-import sys
-import re
-import subprocess
-import tempfile, os, sys
 import argparse
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+
 
 def eprint(*args, **kwargs):
     return print(*args, file=sys.stderr, **kwargs)
 
-class Entry():
 
+class Entry():
     def __init__(self, name, page, children):
         self.name = name
         self.page = page
@@ -44,7 +46,6 @@ def parse_tab(line):
 
 
 def toc_to_elist(toc, filename):
-
     tab = "" # indentation character(s) evaluated and assigned to this later
     lines = toc.split('\n')
     lineno = 0 # incremented at the very beginning of the loop
@@ -105,7 +106,6 @@ def toc_to_elist(toc, filename):
 
 
 def elist_to_gs(elist):
-
     def rec_elist_to_gslist(elist):
         gs_list = []
         for entry in elist:
@@ -118,7 +118,6 @@ def elist_to_gs(elist):
 
 
 def pdfoutline(inpdf, tocfilename, outpdf, gs='gs', quiet=False):
-
     with open(tocfilename) as f:
         toc = f.read()
         gs_command = elist_to_gs(toc_to_elist(toc, tocfilename))
@@ -171,6 +170,14 @@ def printProgressBar (iteration, total, prefix = '', suffix = '', decimals = 1, 
     if iteration == total:
         eprint()
 
+def check_readability(path):
+    if not os.path.exists(path):
+        eprint('{}: not found'.format(path))
+        return False
+    if not os.access(path, os.R_OK):
+        eprint('{}: not readable'.format(path))
+        return False
+    return True
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -180,7 +187,7 @@ if __name__ == '__main__':
 
     parser.add_argument('in_pdf', metavar = 'pdf_in', help = 'Input pdf file')
     parser.add_argument('in_toc', metavar = 'toc_in', help = 'Table of contents file in the specified format')
-    parser.add_argument('out_pdf', metavar = 'pdf_out', help = 'Output pdf file')
+    parser.add_argument('-o', '--output', required = True, metavar = 'pdf_out', help = 'Output pdf file')
     parser.add_argument('-g', '--gs_path', type=str, help = "Path to ghostscript executable")
     parser.add_argument('-q', '--quiet', action = 'store_true', help = "Print only errors")
 
@@ -188,8 +195,20 @@ if __name__ == '__main__':
 
     if args.in_pdf == args.out_pdf:
         eprint('Specify different names for input and output files.')
-        sys.exit()
-    if args.gs_path :
-        pdfoutline(args.in_pdf, args.in_toc, args.out_pdf, args.gs_path, quiet=args.quiet)
+        sys.exit(-1)
+
+    if args.gs_path:
+        gs = args.gs_path
     else:
-        pdfoutline(args.in_pdf, args.in_toc, args.out_pdf, quiet=args.quiet)
+        gs = 'gs'
+
+    if not check_readability(args.in_pdf):
+        sys.exit(-1)
+    if not check_readability(args.in_toc):
+        sys.exit(-1)
+        
+    if not shutil.which(gs):
+        eprint('Ghostscript executable "{}" not found'.format(gs))
+        sys.exit(-1)
+
+    pdfoutline(args.in_pdf, args.in_toc, args.out_pdf, gs=gs, quiet=args.quiet)
