@@ -193,7 +193,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.in_pdf == args.out_pdf:
+    if args.in_pdf == args.output:
         eprint('Specify different names for input and output files.')
         sys.exit(-1)
 
@@ -211,4 +211,4 @@ if __name__ == '__main__':
         eprint('Ghostscript executable "{}" not found'.format(gs))
         sys.exit(-1)
 
-    pdfoutline(args.in_pdf, args.in_toc, args.out_pdf, gs=gs, quiet=args.quiet)
+    pdfoutline(args.in_pdf, args.in_toc, args.output, gs=gs, quiet=args.quiet)
