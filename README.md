@@ -38,12 +38,13 @@ Second Chapter 10
 ### Usage
 
 ```
-$ ./pdfoutline.py sample.pdf sample.toc sample-out.pdf
+$ ./pdfoutline.py sample.pdf sample.toc -o sample-out.pdf
  |██████████████████████----------------------------| 118/263
 ```
 
 optionally, the ghost script executable can be specified as well
 
 ```
-$ ./pdfoutline.py sample.pdf sample.toc sample-out.pdf --gs_path 'C:\Program Files\gs\gs9.55.0\bin\gswin64.exe'
+$ ./pdfoutline.py sample.pdf sample.toc -o sample-out.pdf --gs_path 'C:\Program Files\gs\gs9.55.0\bin\gswin64.exe'
+
 ```
