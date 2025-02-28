@@ -7,7 +7,7 @@ import tempfile
 
 import common
 
-def run_gs(inpdf, gs_script, outpdf, gs_path='gs', quiet=False):
+def run_gs(inpdf, gs_script, outpdf, gs_path='gs', show_progress=False):
     if not common.check_readability(inpdf):
         sys.exit(-1)
 
@@ -29,13 +29,13 @@ def run_gs(inpdf, gs_script, outpdf, gs_path='gs', quiet=False):
         tot = re.findall(r'Processing pages 1 through (\d+)', line.decode('ascii'))
         if tot:
             totalPage = int(tot[0])
-            if not quiet:
+            if show_progress:
                 printProgressBar(0, totalPage)
             break
 
     for line in process.stdout:
         currentPage = re.findall(r'Page (\d+)', line.decode('ascii').strip())
-        if currentPage and not quiet:
+        if currentPage and show_progress:
             printProgressBar(int(currentPage[0]), totalPage)
 
     os.unlink(tmp.name)

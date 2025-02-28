@@ -16,7 +16,7 @@ def main():
     parser.add_argument('in_toc', metavar = 'toc_in', help = 'Table of contents file in the specified format')
     parser.add_argument('-o', '--output', required = True, metavar = 'pdf_out', help = 'Output pdf file')
     parser.add_argument('-g', '--gs-path', type=str, help = "Path to ghostscript executable", default='gs')
-    parser.add_argument('-q', '--quiet', action = 'store_true', help = "Print only errors")
+    parser.add_argument('-s', '--show-progress', action = 'store_true', help = "Show progress bar")
     args = parser.parse_args()
 
     if args.in_pdf == args.output:
@@ -24,7 +24,7 @@ def main():
         sys.exit(-1)
 
     gs_script = bkm_to_gs.bkm_to_gs(args.in_toc)
-    run_gs.run_gs(args.in_pdf, gs_script, args.output, gs_path=args.gs_path, quiet=args.quiet)
+    run_gs.run_gs(args.in_pdf, gs_script, args.output, gs_path=args.gs_path, show_progress=args.show_progress)
 
 if __name__ == '__main__':
     main()
