@@ -1,6 +1,6 @@
 # ![](img/bookmark_border-24px.svg) pdfoutline
 
-A command line tool for adding an outline (a bookmark, or table of contents) to pdf files
+A command line tool that adds a bookmark (table of contents, or outline) to PDF files.
 
 ### Prerequisites
 
@@ -12,22 +12,28 @@ brew install ghostscript
 
 `ghostscript` for windows can be installed from [the official website](https://www.ghostscript.com/releases/gsdnld.html)
 
+Then install (TODO)
+```
+$ alias pdf-yaml-bookmark='src/pdf_yaml_bookmark/cli.py'
+```
+
+
 ### Sample output
 
 <img src="img/demo-output.png" width="300" style="margin:auto">
 
 
-### Sample Table of contents file: `sample.toc`
+### Sample bookmark file: `sample.bkm`
 
 ```
-# this is a comment
+# This is a comment
 First Chapter 1
     first section 1
         first subsection 1
     second section 4
     third section 5
 
-# a command to fix a gap between pdf pages and content pages
+# An offset to fix a gap between pdf pages and content pages
 +10
 
 Second Chapter 10
@@ -36,15 +42,47 @@ Second Chapter 10
 ```
 
 ### Usage
-
 ```
-$ ./pdfoutline.py sample.pdf sample.toc -o sample-out.pdf --show-progress
+$ pdf-yaml-bookmark sample.pdf sample.bkm -o sample-out.pdf --show-progress
  |██████████████████████----------------------------| 118/263
 ```
 
 optionally, the ghost script executable can be specified as well
 
 ```
-$ ./pdfoutline.py sample.pdf sample.toc -o sample-out.pdf --gs-path 'C:\Program Files\gs\gs9.55.0\bin\gswin64.exe' --show-progress
+$ pdf-yaml-bookmark sample.pdf sample.bkm -o sample-out.pdf --gs-path 'C:\Program Files\gs\gs9.55.0\bin\gswin64.exe' --show-progress
 
+```
+
+It also supports for bookmark in YAML format:
+```
+$ pdf-yaml-bookmark sample.pdf sample.yaml --format='yaml' -o sample-out.pdf
+```
+where a YAML file looks like:
+```
+# This is a comment
+-
+ heading: First Chapter
+ page: 1
+ children:
+    -
+     heading: First section
+     page: 1
+     children:
+        -
+         heading: Second section
+         page: 1
+         children:
+-
+ heading: First Chapter
+ page: 1
+ children:
+    -
+     heading: First section
+     page: 1
+     children:
+    -
+     heading: Second section
+     page: 1
+     children:
 ```
