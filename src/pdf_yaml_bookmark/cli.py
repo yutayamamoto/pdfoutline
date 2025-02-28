@@ -3,9 +3,9 @@ import os
 import re
 import sys
 
-import common
-import bkm_to_gs
-import run_gs
+import pdf_yaml_bookmark.common
+import pdf_yaml_bookmark.bkm_to_gs
+import pdf_yaml_bookmark.run_gs
 
 def main():
     parser = argparse.ArgumentParser(

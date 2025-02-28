@@ -5,7 +5,7 @@ import subprocess
 import sys
 import tempfile
 
-import common
+import pdf_yaml_bookmark.common
 
 def run_gs(inpdf, gs_script, outpdf, gs_path='gs', show_progress=False):
     if not common.check_readability(inpdf):

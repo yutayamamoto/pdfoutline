@@ -1,7 +1,7 @@
 import re
 import sys
 
-import common
+import pdf_yaml_bookmark.common
 
 def bkm_to_gs(bkm_filename):
     if not common.check_readability(bkm_filename):
