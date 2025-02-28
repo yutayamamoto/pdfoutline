@@ -45,6 +45,6 @@ $ ./pdfoutline.py sample.pdf sample.toc -o sample-out.pdf
 optionally, the ghost script executable can be specified as well
 
 ```
-$ ./pdfoutline.py sample.pdf sample.toc -o sample-out.pdf --gs_path 'C:\Program Files\gs\gs9.55.0\bin\gswin64.exe'
+$ ./pdfoutline.py sample.pdf sample.toc -o sample-out.pdf --gs-path 'C:\Program Files\gs\gs9.55.0\bin\gswin64.exe'
 
 ```
