@@ -3,9 +3,10 @@ import os
 import re
 import sys
 
-import pdf_yaml_bookmark.common
-import pdf_yaml_bookmark.bkm_to_gs
-import pdf_yaml_bookmark.run_gs
+import pdf_yaml_bookmark.common as common
+import pdf_yaml_bookmark.run_gs as run_gs
+import pdf_yaml_bookmark.bkm_to_yaml as bkm_to_yaml
+import pdf_yaml_bookmark.yaml_to_gs as yaml_to_gs
 
 def main():
     parser = argparse.ArgumentParser(
@@ -23,8 +24,19 @@ def main():
         common.eprint('Error: specify different names for input and output files.')
         sys.exit(-1)
 
-    gs_script = bkm_to_gs.bkm_to_gs(args.in_toc)
+    gs_script = bkm_to_gs(args.in_toc)
     run_gs.run_gs(args.in_pdf, gs_script, args.output, gs_path=args.gs_path, show_progress=args.show_progress)
+
+def bkm_to_gs(bkm_filename):
+    if not common.check_readability(bkm_filename):
+        sys.exit(-1)
+
+    with open(bkm_filename) as f:
+        bkm = f.read()
+        yaml = bkm_to_yaml.bkm_to_yaml(bkm)
+        gs = yaml_to_gs.yaml_to_gs(yaml)
+    return gs
+
 
 if __name__ == '__main__':
     main()

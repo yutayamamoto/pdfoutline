@@ -11,6 +11,9 @@ authors = [
 description = "Adds bookmarks to PDF documents."
 readme = "README.md"
 requires-python = ">=3.8"
+dependencies = [
+  "pyyaml",
+]
 classifiers = [
   "Programming Language :: Python :: 3",
   "Operating System :: OS Independent",

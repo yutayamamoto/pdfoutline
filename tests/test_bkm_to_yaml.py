@@ -1,5 +1,10 @@
 import unittest
 
+# Workaround
+import pathlib
+import sys
+sys.path.append(str(pathlib.Path(__file__).parent.parent) + "/src")
+
 import pdf_yaml_bookmark.bkm_to_yaml as by
 
 sample_bkm = '''\
