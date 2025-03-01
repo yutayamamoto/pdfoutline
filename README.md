@@ -14,7 +14,9 @@ brew install ghostscript
 
 Then install (TODO)
 ```
-$ alias pdf-yaml-bookmark='src/pdf_yaml_bookmark/cli.py'
+$ git clone git@github.com:yutayamamoto/pdfoutline.git
+$ cd pdfoutline
+$ pip install .
 ```
 
 
