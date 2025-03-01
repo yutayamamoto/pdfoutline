@@ -12,13 +12,10 @@ brew install ghostscript
 
 `ghostscript` for windows can be installed from [the official website](https://www.ghostscript.com/releases/gsdnld.html)
 
-Then install (TODO)
+### Installation
 ```
-$ git clone git@github.com:yutayamamoto/pdfoutline.git
-$ cd pdfoutline
-$ pip install .
+$ pip install pdf-yaml-bookmark
 ```
-
 
 ### Sample output
 
