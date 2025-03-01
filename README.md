@@ -1,5 +1,4 @@
-# ![](img/bookmark_border-24px.svg) pdfoutline
-
+# ![](img/bookmark_border-24px.svg) pdf-yaml-bookmark
 A command line tool that adds a bookmark (table of contents, or outline) to PDF files.
 
 ### Prerequisites
