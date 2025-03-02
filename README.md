@@ -1,4 +1,4 @@
-# ![](img/bookmark_border-24px.svg) pdf-yaml-bookmark
+# ![](docs/img/bookmark_border-24px.svg) pdf-yaml-bookmark
 A command line tool that adds a bookmark (table of contents, or outline) to PDF files.
 
 ### Prerequisites
@@ -18,7 +18,7 @@ $ pip install pdf-yaml-bookmark
 
 ### Sample output
 
-<img src="img/demo-output.png" width="300" style="margin:auto">
+<img src="docs/img/demo-output.png" width="300" style="margin:auto">
 
 
 ### Sample bookmark file: `sample.bkm`
