@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pdf_yaml_bookmark"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name = "Yuta Yamamoto", email = "jichael.y.yuta1995@gmail.com" },
 ]
