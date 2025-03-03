@@ -1,7 +1,7 @@
 <!-- Vim: set foldlevel=1: -->
 # ![](docs/img/bookmark_border-24px.svg) pdf-yaml-bookmark
 
-## Introduction
+## Overview
 
 <img src="docs/img/demo-output.png" width="300" style="margin:auto">
 
