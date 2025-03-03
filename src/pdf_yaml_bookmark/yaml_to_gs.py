@@ -16,10 +16,11 @@ def traverse_sections(sections, gsList):
     """
     for section in sections:
         page        = section["page"]
+        offset      = section["offset"]
         heading     = section["heading"]
         children    = section["children"] or []
         count       = len(children)
-        gsList.append(f"[/Page {page} /View [/XYZ null null null] /Title <{fmt_gs_string(heading)}> /Count {count} /OUT pdfmark")
+        gsList.append(f"[/Page {page+offset} /View [/XYZ null null null] /Title <{fmt_gs_string(heading)}> /Count {count} /OUT pdfmark")
         traverse_sections(children, gsList)
 
 # TODO: printing syntax errors for YAML appropriately

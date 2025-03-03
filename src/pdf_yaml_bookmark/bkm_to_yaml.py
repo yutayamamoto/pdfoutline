@@ -46,11 +46,12 @@ def bkm_to_yaml(bkmText):
         if ms:
             indent  = ms.group(1)
             heading = ms.group(2)
-            page    = offset + int(ms.group(3))
+            page    = int(ms.group(3))
             yamlText += f'''\
 {indent}-
 {indent} heading: {heading}
 {indent} page: {page}
+{indent} offset: {offset}
 {indent} children:
 '''
             continue

@@ -86,7 +86,7 @@ $ pdf-yaml-bookmark my_document.pdf \
     --gs-path 'C:\Program Files\gs\gs9.55.0\bin\gswin64.exe'
 ```
 
-Note: If the bookmark file has a `.yaml` or `.yml` extension, it will be parsed as YAML, structured by keys `heading`, `page`, and `children`. In that case, it might look like this:
+Note: If the bookmark file has a `.yaml` or `.yml` extension, it will be parsed as YAML, structured by keys `heading`, `page`, `offset`, and `children`. In that case, it might look like this:
 
 ```yaml
 # my_bookmark.yaml
@@ -94,26 +94,32 @@ Note: If the bookmark file has a `.yaml` or `.yml` extension, it will be parsed 
 -
   heading: First Chapter
   page: 1
+  offset: 0
   children:
     -
       heading: First section
       page: 1
+      offset: 0
       children:
         -
           heading: Second section
           page: 1
+          offset: 0
           children:
 -
   heading: First Chapter
   page: 1
+  offset: 5
   children:
     -
       heading: First section
       page: 1
+      offset: 5
       children:
     -
       heading: Second section
       page: 1
+      offset: 5
       children:
 ```
 

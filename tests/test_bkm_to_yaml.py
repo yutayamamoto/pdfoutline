@@ -12,7 +12,7 @@ sample_bkm = '''\
 First Chapter 1
     First section 1
         Second section 1
-# - offset: 5
++5
 First Chapter 1
     First section 1
     Second section 1\
@@ -23,27 +23,32 @@ sample_yaml = '''\
 -
  heading: First Chapter
  page: 1
+ offset: 0
  children:
     -
      heading: First section
      page: 1
+     offset: 0
      children:
         -
          heading: Second section
          page: 1
+         offset: 0
          children:
-# - offset: 5
 -
  heading: First Chapter
  page: 1
+ offset: 5
  children:
     -
      heading: First section
      page: 1
+     offset: 5
      children:
     -
      heading: Second section
      page: 1
+     offset: 5
      children:
 '''
 

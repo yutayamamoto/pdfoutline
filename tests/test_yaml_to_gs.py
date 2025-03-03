@@ -12,27 +12,32 @@ sample_yaml = '''\
 -
  heading: First Chapter
  page: 1
+ offset: 0
  children:
     -
      heading: First section
      page: 1
+     offset: 0
      children:
         -
          heading: Second section
          page: 1
+         offset: 0
          children:
-# - offset: 5
 -
  heading: First Chapter
  page: 1
+ offset: 5
  children:
     -
      heading: First section
      page: 1
+     offset: 5
      children:
     -
      heading: Second section
      page: 1
+     offset: 5
      children:
 '''
 
@@ -44,9 +49,9 @@ sample_gs=f'''\
 [/Page 1 /View [/XYZ null null null] /Title <{fmtGsString("First Chapter")}> /Count 1 /OUT pdfmark
 [/Page 1 /View [/XYZ null null null] /Title <{fmtGsString("First section")}> /Count 1 /OUT pdfmark
 [/Page 1 /View [/XYZ null null null] /Title <{fmtGsString("Second section")}> /Count 0 /OUT pdfmark
-[/Page 1 /View [/XYZ null null null] /Title <{fmtGsString("First Chapter")}> /Count 2 /OUT pdfmark
-[/Page 1 /View [/XYZ null null null] /Title <{fmtGsString("First section")}> /Count 0 /OUT pdfmark
-[/Page 1 /View [/XYZ null null null] /Title <{fmtGsString("Second section")}> /Count 0 /OUT pdfmark\
+[/Page 6 /View [/XYZ null null null] /Title <{fmtGsString("First Chapter")}> /Count 2 /OUT pdfmark
+[/Page 6 /View [/XYZ null null null] /Title <{fmtGsString("First section")}> /Count 0 /OUT pdfmark
+[/Page 6 /View [/XYZ null null null] /Title <{fmtGsString("Second section")}> /Count 0 /OUT pdfmark\
 '''
 
 class TestYamlToGs(unittest.TestCase):
