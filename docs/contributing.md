@@ -21,8 +21,8 @@ We recommend the following steps for development:
 
 1. Clone the repository:
    ```console
-   $ git clone git@github.com:yutayamamoto/pdfoutline.git
-   $ cd pdfoutline
+   $ git clone git@github.com:yutayamamoto/pdf-yaml-bookmark.git
+   $ cd pdf-yaml-bookmark
    ```
 
 2. Set up a virtual environment:
