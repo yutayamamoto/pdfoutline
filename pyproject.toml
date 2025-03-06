@@ -22,6 +22,12 @@ classifiers = [
 license = "MIT"
 license-files = ["LICEN[CS]E*"]
 
+[project.optional-dependencies]
+dev = [
+  "build",
+  "twine",
+]
+
 [project.urls]
 Homepage = "https://github.com/yutayamamoto/pdf-yaml-bookmark"
 Issues = "https://github.com/yutayamamoto/pdf-yaml-bookmark/issues"
